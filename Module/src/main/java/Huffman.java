@@ -49,7 +49,7 @@ public class Huffman {
      * PriorityQueue. How you implement this method depends on which you pick.
      */
     public static void addNode(Collection<HuffmanNode> collection, HuffmanNode node) {
-        // TODO: implement
+        collection.add(node);
     }
 
     /**
@@ -63,8 +63,7 @@ public class Huffman {
      * minimum node and remove it.
      */
     public static HuffmanNode removeMin(Collection<HuffmanNode> collection) {
-        // TODO: implement
-        return null;
+        return collection.remove(0);
     }
 
     /**
