@@ -83,8 +83,22 @@ public class Huffman {
      *    character (no combine() call needed).
      */
     public static HuffmanNode createHuffTree(int[] freq) {
-        // TODO: implement
-        return null;
+        Collection<HuffmanNode> collection = new Collection<>();
+        for (int n = 0; n<freq.length; n++){
+            if (freq[n]!=0){
+                addNode(collection, new HuffmanNode(n, freq[n], null, null));
+            }
+        }
+        if (collection.isEmpty()){
+            return null;
+        } else {
+            while (collection.length()>1){
+                HuffmanNode thing1 = removeMin(collection);
+                HuffmanNode thing2 = removeMin(collection);
+                addNode(collection, HuffmanNode.combine(thing1, thing2));
+            }
+            return collection.remove(0);
+        }
     }
 
     /**
@@ -103,6 +117,11 @@ public class Huffman {
         String[] codes = new String[NUM_CHARS];
         Arrays.fill(codes, "");
         // TODO: implement
+        for (int a=0; a<codes.length; a++){
+//            codes[a] = codeHelper(root, a);
+        }
+
+
         return codes;
     }
 

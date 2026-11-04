@@ -69,4 +69,8 @@ public record HuffmanNode(int charAscii, int freq, HuffmanNode left, HuffmanNode
         if (comesBefore(other, this)) return 1;
         return 0;
     }
+
+    /** Accepts a HuffmanNode and an ASCII decimal value, returning a String representing the Huffman code for that value in the node */
+    public static String codeHelper(String codeStr, HuffmanNode node, int charInt){
+    }
 }

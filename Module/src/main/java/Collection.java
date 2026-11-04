@@ -1,17 +1,16 @@
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.NoSuchElementException;
 
-public class Collection<T>{
+public class Collection<T extends Comparable<T>> {
     private int liveCount;
     private T[] array;
 
     @SuppressWarnings("unchecked")
     public Collection() {
-        this.array = (T[]) new Object[1];
+        this.array = (T[]) new Comparable[2];
         this.liveCount = 0;
     }
-
+    /** Returns true if the collection is empty, false otherwise */
     public boolean isEmpty(){
         return liveCount==0;
     }
@@ -21,26 +20,30 @@ public class Collection<T>{
         return liveCount;
     }
 
+    public T get(int index){
+        if (index>liveCount-1 || index<0){
+            throw new IllegalArgumentException();
+        } else {
+            return array[index];
+        }
+    }
+
     @SuppressWarnings("unchecked")
     /** Accepts an element and adds it to the end of a list */
-    public void add(T newVal){
-        if (isEmpty()){
-            array[0] = newVal;
-            liveCount++;
-        } else {
-            if (length() == array.length-1){
-                T[] newArr = (T[]) new Object[array.length*2];
-                for (int x = 0; x < array.length-1; x++) {
-                    newArr[x] = array[x];
-                }
-                array = newArr;
-                Arrays.sort(array);
-                liveCount++;
-            } else {
-                array[length()] = newVal;
-                Arrays.sort(array);
-                liveCount++;
+    public void add (T newVal){
+        if (liveCount == array.length-1){
+            T[] newArr = (T[]) new Comparable[array.length*2];
+            for (int x = 0; x < array.length-1; x++) {
+                newArr[x] = array[x];
             }
+            newArr[liveCount] = newVal;
+            array = newArr;
+            liveCount++;
+            insertionSort();
+        } else {
+            array[liveCount] = newVal;
+            liveCount++;
+            insertionSort();
         }
     }
 
@@ -50,18 +53,29 @@ public class Collection<T>{
         if (index > array.length-1 || index < 0){
             throw new NoSuchElementException();
         } else {
-            T removeable = array[index];
-            T[] replace = (T[]) new Object[array.length-1];
-            System.arraycopy(array, 0, replace, 0, index-1);
-            System.arraycopy(array, index+1, replace, index, length()-index-1);
+            T removable = array[index];
+            T[] replace = (T[]) new Comparable[array.length];
+            for (int a = 0; a<index; a++){
+                replace[a] = array[a];
+            }
+            for (int b = index+1; b<length(); b++){
+                replace[b-1] = array[b];
+            }
             array = replace;
             liveCount--;
-            return removeable;
+            return removable;
         }
     }
 
-    /** Returns the smallest element in the collection */
-    public T findSmallest(){
-        return null;
+    public void insertionSort(){
+        T hold;
+        for (int x=1; x<length(); x++){
+            for (int i=x; i>0 && array[i].compareTo(array[i-1])<0; i--){
+                hold = array[i];
+                array[i] = array[i-1];
+                array[i-1] = hold;
+            }
+        }
     }
+
 }
